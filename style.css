@@ -1,0 +1,1616 @@
+/* =====================================================
+   DAFTAR ISI
+   1.  Reset & dasar
+   2.  Layar & background
+   3.  Tombol & kotak umum
+   4.  Slot foto (placeholder otomatis)
+   5.  Layar 1  : Start
+   6.  Layar 1b : Kalender
+   7.  Layar 2  : Notifikasi
+   8.  Layar 3  : Password
+   9.  Layar 4  : Chat
+   10. Layar 5  : Nama
+   11. Layar 6  : About (ICU)
+   12. Layar 7  : Menu
+   13. Layar 8  : Lilin (harapan, kue, konfeti, pop up)
+   14. Layar 9  : Surat
+   15. Layar 10 : Gallery
+   16. Layar 11 : Folder
+   17. Layar 12 : Grid foto
+   18. Layar 13 : Mesin capit
+   19. Layar 14 : Voucher
+   20. Layar 15 : Bunga
+   21. Musik
+   ===================================================== */
+
+
+/* =====================================================
+   1. RESET & DASAR
+   ===================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  height: 100%;
+  background: #e9f1f8;
+  font-family: 'Poppins', sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Kotak tulis harapan harus bisa diketik & dipilih teksnya */
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Bingkai aplikasi (ukuran layar HP) */
+#app {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #fff;
+}
+
+
+/* =====================================================
+   2. LAYAR & BACKGROUND
+   ===================================================== */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;               /* semua layar disembunyikan dulu */
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 30px 20px 28px;
+}
+
+.screen > * {
+  flex-shrink: 0;
+}
+
+/* Hanya layar "active" yang tampil */
+.screen.active {
+  display: flex;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Pilihan warna background */
+.bg-blue-yellow {
+  background: linear-gradient(180deg, #eaf3fb 0%, #f8fbff 45%, #ffe65c 100%);
+}
+
+.bg-yellow {
+  background: linear-gradient(180deg, #ffe35a 0%, #fff6c4 45%, #e4f0fa 100%);
+}
+
+.bg-pink {
+  background:
+    radial-gradient(circle at 20% 30%, #ffc7dd 0, transparent 45%),
+    radial-gradient(circle at 80% 70%, #cfe3ff 0, transparent 50%),
+    #fbeaf3;
+}
+
+.bg-green {
+  background: linear-gradient(180deg, #fff 0%, #e5ffd9 45%, #b9f3a4 100%);
+}
+
+.bg-sky {
+  background: linear-gradient(180deg, #bcd9f5 0%, #e8f2fc 60%, #fff 100%);
+}
+
+
+/* =====================================================
+   3. TOMBOL & KOTAK UMUM
+   ===================================================== */
+.btn {
+  border: 1.5px solid #222;
+  border-radius: 30px;
+  padding: 10px 34px;
+  font: 500 15px 'Poppins';
+  cursor: pointer;
+  background: linear-gradient(180deg, #d6ffc9, #a8ee93);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.18);
+  transition: 0.2s;
+  color: #111;
+}
+
+.btn:active   { transform: scale(0.94); }
+.btn:disabled { opacity: 0.6; cursor: default; }
+
+.btn.blue   { background: linear-gradient(180deg, #e4f4ff, #bfe0ff); }
+.btn.yellow { background: linear-gradient(180deg, #fffbb8, #ffe86a); }
+
+/* Area tombol bawah: ikut mengalir, tidak menutupi konten */
+.bottom {
+  position: static;
+  margin-top: auto;
+  padding-top: 34px;
+  padding-bottom: 6px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
+
+.bottom.col {
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Kotak putih bergaris */
+.box {
+  background: #fff;
+  border: 1.5px solid #222;
+  border-radius: 14px;
+  padding: 22px 20px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.6;
+  width: 100%;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05);
+}
+
+.mini-arrow {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #6aa9ff;
+  color: #fff;
+  font-size: 10px;
+  display: grid;
+  place-items: center;
+}
+
+
+/* =====================================================
+   4. SLOT FOTO (placeholder otomatis)
+   Kalau gambar belum ada, tampil kotak abu-abu bertuliskan nama file.
+   ===================================================== */
+.slot {
+  position: relative;
+  background: #cfd6de;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* Tulisan nama file di placeholder */
+.slot::before {
+  content: attr(data-label);
+  font: 500 10px 'Poppins';
+  color: #6b7683;
+  text-align: center;
+  padding: 4px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.slot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 1;
+}
+
+.slot.contain img {
+  object-fit: contain;
+}
+
+/* Kalau gambar sudah berhasil dimuat, placeholder hilang */
+.slot.loaded {
+  background: transparent;
+}
+
+.slot.loaded::before {
+  display: none;
+}
+
+.slot.ghost:not(.loaded) {
+  border: 2px dashed #6f86a0;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 14px;
+}
+
+
+/* =====================================================
+   5. LAYAR 1 : START
+   ===================================================== */
+.hero {
+  position: relative;
+  width: 270px;
+  height: 330px;
+  margin-top: 30px;
+}
+
+.hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bubble {
+  position: absolute;
+  background: #fff3a8;
+  border: 1.5px solid #222;
+  border-radius: 50%;
+  padding: 12px 8px;
+  font: 700 12px 'Poppins';
+  z-index: 3;
+  animation: float 2.4s ease-in-out infinite;
+}
+
+.bubble.l { left: -14px; top: 60px; }
+.bubble.r { right: -14px; top: 60px; animation-delay: 0.5s; }
+
+@keyframes float {
+  50% { transform: translateY(-6px); }
+}
+
+.card-start {
+  width: 100%;
+  flex: 1;
+  min-height: 230px;
+  margin-top: 10px;
+  border-radius: 30px 30px 0 0;
+  background: linear-gradient(180deg, #fffdf0, #ffe65c);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+
+.big-title {
+  font-family: 'Lilita One';
+  color: #1647c9;
+  text-align: center;
+  line-height: 1.05;
+  font-size: 42px;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 0 #fff;
+}
+
+.spark {
+  position: absolute;
+  color: #f5c400;
+  animation: twinkle 2s infinite;
+  z-index: 3;
+}
+
+@keyframes twinkle {
+  50% { opacity: 0.2; transform: scale(0.6); }
+}
+
+
+/* =====================================================
+   6. LAYAR 1b : KALENDER
+   ===================================================== */
+.date-title {
+  font-family: 'Lilita One';
+  color: #1647c9;
+  font-size: 38px;
+  line-height: 1;
+  text-align: center;
+  margin-top: 28px;
+  text-shadow: 2px 2px 0 #fff;
+}
+
+.date-sub {
+  font-size: 12px;
+  margin: 10px 0 18px;
+  color: #444;
+}
+
+.cal {
+  width: 100%;
+  max-width: 340px;
+  background: #fff;
+  border: 1.5px solid #222;
+  border-radius: 18px;
+  padding: 14px 12px 16px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.08);
+}
+
+.cal-head {
+  text-align: center;
+  font: 600 16px 'Poppins';
+  margin-bottom: 10px;
+}
+
+/* Baris nama hari & grid tanggal sama-sama 7 kolom */
+.cal-week,
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.cal-week span {
+  text-align: center;
+  font: 600 10px 'Poppins';
+  color: #555;
+  padding: 4px 0;
+}
+
+/* Hari Minggu warna merah */
+.cal-week .sun,
+.cell.sun {
+  color: #d32f2f;
+}
+
+/* Satu tanggal */
+.cell {
+  position: relative;
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font: 500 13px 'Poppins';
+  color: #222;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.cell:hover  { background: #fff3a8; }
+.cell:active { transform: scale(0.9); }
+
+/* Tanggal salah: dicoret silang merah */
+.cell.wrong {
+  color: #aaa;
+  cursor: default;
+  background: transparent;
+}
+
+.cell.wrong::before,
+.cell.wrong::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  background: #e53935;
+  border-radius: 2px;
+  transform: rotate(var(--r)) scaleX(0);
+  animation: draw 0.3s ease forwards;
+}
+
+.cell.wrong::before { --r: 45deg; }
+.cell.wrong::after  { --r: -45deg; animation-delay: 0.12s; }
+
+@keyframes draw {
+  to { transform: rotate(var(--r)) scaleX(1); }
+}
+
+/* Tanggal benar: muncul hati */
+.cell.right {
+  background: #ffd3e2;
+  color: transparent;
+  cursor: default;
+  animation: pop 0.5s;
+}
+
+.cell.right::after {
+  content: '♥';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  color: #e91e63;
+  animation: heartPop 0.6s cubic-bezier(0.2, 1.8, 0.4, 1);
+}
+
+@keyframes heartPop {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+.cal-msg {
+  margin-top: 16px;
+  font: 500 13px 'Poppins';
+  min-height: 20px;
+  text-align: center;
+}
+
+
+/* =====================================================
+   7. LAYAR 2 : NOTIFIKASI
+   ===================================================== */
+.bell {
+  font-size: 44px;
+  margin: 70px 0 30px;
+  animation: ring 1.4s infinite;
+  transform-origin: top center;
+}
+
+@keyframes ring {
+  0%, 60%, 100% { transform: rotate(0); }
+  10% { transform: rotate(16deg); }
+  20% { transform: rotate(-14deg); }
+  30% { transform: rotate(10deg); }
+  40% { transform: rotate(-8deg); }
+}
+
+/* Efek getar (tombol "No", password salah, dll) */
+.shake {
+  animation: shk 0.4s;
+}
+
+@keyframes shk {
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+
+/* =====================================================
+   8. LAYAR 3 : PASSWORD
+   ===================================================== */
+.lock {
+  font-size: 30px;
+  margin-top: 70px;
+  color: #1647c9;
+  z-index: 1;
+}
+
+.pw-label {
+  font-size: 13px;
+  z-index: 1;
+}
+
+.pw-dots {
+  display: flex;
+  gap: 10px;
+  margin: 8px 0 26px;
+  font: 600 28px 'Poppins';
+  height: 40px;
+  z-index: 1;
+}
+
+.pw-dots span {
+  width: 22px;
+  text-align: center;
+  border-bottom: 2px solid #222;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 70px);
+  gap: 14px 20px;
+  justify-content: center;
+  z-index: 1;
+}
+
+.key {
+  height: 46px;
+  border: 1.5px solid #222;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #eaf6ff, #c9e4fb);
+  font: 500 20px 'Poppins';
+  cursor: pointer;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.key:active { transform: translateY(2px); }
+.key.zero   { grid-column: 2; }     /* angka 0 di kolom tengah */
+
+.star-bg {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  width: 200px;
+  height: 200px;
+  opacity: 0.25;
+  z-index: 0;
+}
+
+
+/* =====================================================
+   9. LAYAR 4 : CHAT
+   ===================================================== */
+.topbar {
+  width: calc(100% + 40px);
+  margin: -30px -20px 20px;
+  padding: 44px 20px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(180deg, #ffe35a, #fff3a6 80%, transparent);
+  font: 600 17px 'Poppins';
+}
+
+.circle-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+}
+
+.date-pill {
+  border: 1px solid #1647c9;
+  background: #d9ebff;
+  color: #1647c9;
+  font-size: 8px;
+  padding: 2px 12px;
+  border-radius: 10px;
+  margin-bottom: 22px;
+}
+
+.msg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f7b6d2;
+}
+
+.bub {
+  background: #2f7bff;
+  color: #fff;
+  font-size: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(47, 123, 255, 0.4);
+}
+
+.chat-card {
+  margin-top: 18px;
+  width: 100%;
+  background: #fffde2;
+  border: 1.5px solid #222;
+  border-radius: 20px;
+  padding: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.chat-card .slot {
+  flex: 1;
+  height: 150px;
+  border-radius: 12px;
+}
+
+/* Tombol silang kecil di pojok foto */
+.x {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 10px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #888;
+  z-index: 2;
+}
+
+.x.dark {
+  background: #222;
+  color: #fff;
+  border: 0;
+}
+
+.input-bar {
+  width: 100%;
+  margin-top: 10px;
+  border: 1.5px solid #222;
+  border-radius: 30px;
+  padding: 8px 12px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.input-bar .send {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #2f7bff;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+}
+
+/* Kotak teks yang "diketik" otomatis (chat 2) */
+.typebox {
+  width: 100%;
+  margin-top: 40px;
+  border: 1.5px solid #222;
+  border-radius: 12px;
+  padding: 16px 36px 16px 16px;
+  font-size: 13px;
+  background: #fff;
+  position: relative;
+  min-height: 70px;
+}
+
+.typebox .send {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #6aa9ff;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+}
+
+/* Kursor berkedip saat mengetik */
+.caret::after {
+  content: '|';
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+
+/* =====================================================
+   10. LAYAR 5 : NAMA
+   ===================================================== */
+.url {
+  border: 1.5px solid #222;
+  border-radius: 30px;
+  padding: 6px 22px;
+  background: #fff;
+  font-size: 13px;
+  margin: 10px 0;
+}
+
+.name-title {
+  font-family: 'Lilita One';
+  color: #1647c9;
+  font-size: 44px;
+  line-height: 0.95;
+  text-align: center;
+  margin-top: 20px;
+  letter-spacing: 2px;
+}
+
+.name-title b {
+  display: block;
+  font-family: 'Titan One';
+  font-size: 50px;
+  color: #ffe04a;
+  -webkit-text-stroke: 2px #1647c9;
+  transform: rotate(-4deg);
+}
+
+.oval {
+  margin-top: 20px;
+  width: 260px;
+  height: 300px;
+  border-radius: 50%;
+  border: 3px solid #222;
+  animation: pop 0.8s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.5); opacity: 0; }
+}
+
+/* Tulisan kecil di atas foto */
+.tag {
+  position: absolute;
+  font-size: 9px;
+  background: #ffd3e8;
+  padding: 1px 5px;
+  color: #c13a80;
+  z-index: 3;
+}
+
+.tag.big {
+  background: #ffe85a;
+  color: #111;
+  font: 700 12px 'Poppins';
+}
+
+
+/* =====================================================
+   11. LAYAR 6 : ABOUT (ICU)
+   ===================================================== */
+.icu-title {
+  font-family: 'Titan One';
+  font-size: 54px;
+  line-height: 0.9;
+  text-align: center;
+  color: #fff;
+  margin-top: 20px;
+  text-shadow: 0 0 10px #8aa7ff, 0 0 20px #8aa7ff, 3px 3px 0 #b9c9ff;
+  transform: rotate(-6deg);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 26px;
+  margin: 26px 0 14px;
+  width: 100%;
+  padding: 0 14px;
+}
+
+.fact {
+  text-align: center;
+}
+
+.fact .slot {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1.5px solid #222;
+}
+
+.fact span {
+  display: block;
+  margin-top: 5px;
+  border: 1px solid #222;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 9px;
+  padding: 2px 0;
+}
+
+.another {
+  position: relative;
+  width: 100%;
+  border: 1.5px solid #222;
+  border-radius: 10px;
+  background: #e8fbe6;
+  padding: 20px 14px 12px;
+  font-size: 10px;
+  min-height: 70px;
+  margin-top: 14px;
+}
+
+.another b {
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 9px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   12. LAYAR 7 : MENU
+   ===================================================== */
+.menu-card {
+  width: 150px;
+  height: 130px;
+  border: 1.5px solid #222;
+  border-radius: 18px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 6px 10px;
+  margin-bottom: 22px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.menu-card:hover {
+  transform: translateY(-4px) scale(1.04);
+}
+
+.menu-card .lbl {
+  border-radius: 20px;
+  background: linear-gradient(180deg, #d6ffc9, #a8ee93);
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 14px;
+}
+
+.menu-card svg {
+  height: 70px;
+}
+
+
+/* =====================================================
+   13. LAYAR 8 : LILIN
+   Urutan tampil:
+   (1) .wish-stage  -> tulis harapan
+   (2) .cake-stage  -> tiup lilin
+   (3) konfeti + .wish-popup
+   ===================================================== */
+.top-back {
+  padding: 8px 34px;
+  margin-top: 10px;
+  z-index: 6;
+}
+
+/* ---------- (1) TAHAP TULIS HARAPAN ---------- */
+.wish-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.wish-stage.hide {
+  display: none;
+}
+
+.wish-title {
+  font-family: 'Lilita One';
+  color: #1647c9;
+  font-size: 36px;
+  text-shadow: 2px 2px 0 #fff;
+}
+
+.wish-sub {
+  font-size: 12px;
+  color: #444;
+  margin: 6px 0 18px;
+  text-align: center;
+}
+
+#wishInput {
+  width: 100%;
+  height: 150px;
+  padding: 14px;
+  border: 1.5px solid #222;
+  border-radius: 16px;
+  background: #fff;
+  font: 400 14px 'Poppins';
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.08);
+}
+
+#wishInput:focus {
+  border-color: #1647c9;
+}
+
+.wish-error {
+  min-height: 20px;
+  margin: 8px 0 10px;
+  font-size: 12px;
+  color: #c62828;
+}
+
+/* ---------- (2) TAHAP TIUP LILIN ---------- */
+.cake-stage {
+  display: none;               /* baru tampil setelah harapan ditulis */
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.cake-stage.show {
+  display: flex;
+}
+
+#cake {
+  width: 270px;
+  max-width: 100%;
+  cursor: pointer;
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.15));
+}
+
+.hint-blow {
+  margin-top: 18px;
+  font-size: 13px;
+  font-weight: 500;
+  animation: pulse 1.6s infinite;
+}
+
+@keyframes pulse {
+  50% { opacity: 0.4; transform: scale(1.04); }
+}
+
+/* Api lilin bergoyang */
+.flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flick 0.45s ease-in-out infinite alternate;
+}
+
+@keyframes flick {
+  from { transform: scale(1, 1) rotate(-3deg); }
+  to   { transform: scale(0.9, 1.1) rotate(3deg); }
+}
+
+/* Asap tipis (awalnya tidak terlihat) */
+.smoke {
+  fill: #cfcfcf;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Setelah ditiup (class "blown" ditambah lewat JS):
+   api padam, asap naik, tulisan petunjuk hilang */
+.blown .flame {
+  animation: none;
+  transform: scale(0);
+  opacity: 0;
+  transition: 0.4s ease;
+}
+
+.blown .smoke {
+  animation: smoke 1.4s ease-out forwards;
+}
+
+.blown .hint-blow {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes smoke {
+  0%   { opacity: 0.85; transform: translateY(0) scale(0.6); }
+  100% { opacity: 0;    transform: translateY(-44px) scale(2.2); }
+}
+
+/* ---------- KONFETI ---------- */
+#confetti {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;        /* tidak menghalangi klik */
+  z-index: 20;
+  display: none;
+}
+
+#confetti.on {
+  display: block;
+}
+
+/* ---------- (3) POP UP SETELAH LILIN PADAM ---------- */
+.wish-popup {
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background: rgba(22, 71, 201, 0.25);
+  z-index: 30;                 /* di atas konfeti */
+}
+
+.wish-popup.show {
+  display: grid;
+}
+
+.wish-popup-box {
+  width: 300px;
+  max-width: 90%;
+  padding: 30px 22px 24px;
+  background: linear-gradient(180deg, #fffef6, #ffeee9);
+  border: 1.5px solid #222;
+  border-radius: 22px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: pop 0.5s;
+}
+
+.wish-popup-emoji {
+  font-size: 44px;
+  margin-bottom: 10px;
+}
+
+.wish-popup-text {
+  font: 500 16px/1.5 'Patrick Hand';
+  margin-bottom: 22px;
+  color: #333;
+}
+
+
+/* =====================================================
+   14. LAYAR 9 : SURAT
+   ===================================================== */
+.env-wrap {
+  position: relative;
+  width: 280px;
+  height: min(560px, calc(100vh - 150px));
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.env-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 200px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  animation: pulse 1.6s infinite;
+  transition: opacity 0.4s;
+}
+
+.env-wrap.open .env-hint {
+  opacity: 0;
+}
+
+/* Amplop */
+.env {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 170px;
+}
+
+.env-back {
+  position: absolute;
+  inset: 0;
+  background: #f06b90;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.env-front {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #ffa9c0, #ff8fae);
+  z-index: 3;
+  clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Tutup amplop (segitiga atas) */
+.env-flap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 95px;
+  background: #ff86a5;
+  z-index: 4;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transition: transform 0.7s ease, z-index 0s;
+}
+
+.env-wrap.open .env-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+  transition: transform 0.7s ease, z-index 0s 0.35s;
+  background: #ff9db8;
+}
+
+.seal {
+  position: absolute;
+  left: 50%;
+  top: 66px;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-size: 22px;
+  color: #d6336c;
+  transition: opacity 0.3s;
+}
+
+.env-wrap.open .seal {
+  opacity: 0;
+}
+
+/* Kertas surat: awalnya pendek, memanjang saat amplop dibuka */
+.paper {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  height: 150px;
+  background: #fffdfa;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: height 1.8s ease 0.8s;
+}
+
+.env-wrap.open .paper {
+  height: calc(100% - 24px);
+}
+
+.paper-inner {
+  height: 100%;
+  overflow-y: auto;
+  padding: 22px 14px 120px;
+  font: 12px/1.3 'Patrick Hand';
+  text-align: center;
+  color: #333;
+}
+
+.heart {
+  position: absolute;
+  left: 50%;
+  top: -22px;
+  transform: translateX(-50%);
+  font-size: 34px;
+  color: #ff8fb4;
+  opacity: 0;
+  transition: opacity 0.5s 2.4s;
+}
+
+.env-wrap.open .heart {
+  opacity: 1;
+}
+
+
+/* =====================================================
+   15. LAYAR 10 : GALLERY
+   ===================================================== */
+.hint {
+  border: 1px solid #c8a800;
+  background: #fff8c2;
+  border-radius: 12px;
+  font-size: 8px;
+  padding: 2px 12px;
+  margin: 5px 0 10px;
+}
+
+.g-card {
+  width: 140px;
+  height: 112px;
+  border: 1.5px solid #222;
+  border-radius: 16px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  transition: 0.25s;
+}
+
+.g-card:hover {
+  transform: scale(1.06);
+}
+
+.g-card svg {
+  width: 46px;
+  height: 46px;
+}
+
+
+/* =====================================================
+   16. LAYAR 11 : FOLDER
+   ===================================================== */
+.window {
+  margin-top: 60px;
+  width: 100%;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.win-bar {
+  height: 26px;
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 5px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4a7cf0;
+}
+
+.folder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 28px 0 22px;
+  cursor: pointer;
+  font-size: 13px;
+  gap: 2px;
+  transition: 0.2s;
+}
+
+.folder:hover {
+  transform: scale(1.08);
+}
+
+.folder svg {
+  width: 80px;
+}
+
+.win-foot {
+  text-align: center;
+  background: #f1f1f1;
+  font-size: 8px;
+  padding: 4px;
+}
+
+
+/* =====================================================
+   17. LAYAR 12 : GRID FOTO
+   ===================================================== */
+.search {
+  width: 100%;
+  background: #d2d2d6;
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: 12px;
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* Dua kolom bergaya masonry */
+.grid {
+  width: 100%;
+  column-count: 2;
+  column-gap: 8px;
+  margin-top: 14px;
+}
+
+.grid .slot {
+  break-inside: avoid;
+  margin-bottom: 8px;
+  border-radius: 14px;
+  opacity: 0;
+  animation: fadeIn 0.6s forwards;
+}
+
+.grid .slot:nth-child(odd)  { height: 210px; }
+.grid .slot:nth-child(even) { height: 170px; }
+
+
+/* =====================================================
+   18. LAYAR 13 : MESIN CAPIT
+   ===================================================== */
+#s-claw {
+  padding-top: 16px;
+}
+
+.claw-svg {
+  width: 100%;
+  max-width: 280px;
+  display: block;
+  filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.25));
+}
+
+.claw-btn {
+  margin-top: 18px;
+  border-radius: 8px;
+  padding: 9px 30px;
+}
+
+/* Lampu kelap-kelip di atas mesin */
+.bulb {
+  fill: #ffe45c;
+  animation: bulbBlink 1s infinite;
+}
+
+.bulb:nth-child(odd) {
+  animation-delay: 0.5s;
+}
+
+@keyframes bulbBlink {
+  50% { fill: #fff7c2; opacity: 0.45; }
+}
+
+/* Animasi gerak capit (durasi diatur di sini, urutan di script.js) */
+#carriage            { transition: transform 1.2s ease-in-out; }
+#hoist               { transition: transform 1s ease-in-out; }
+#armL, #armR         { transition: transform 0.5s ease; transform-origin: 0 0; }
+#dropBall            { transition: transform 0.7s ease-in, opacity 0.3s; }
+#doorBall            { transition: opacity 0.4s; }
+
+/* Dipakai saat reset: matikan semua animasi sebentar */
+.notrans * {
+  transition: none !important;
+}
+
+
+/* =====================================================
+   19. LAYAR 14 : VOUCHER
+   ===================================================== */
+.v-note {
+  border: 1px solid #222;
+  background: #f3f6ff;
+  border-radius: 8px;
+  font-size: 11px;
+  text-align: center;
+  padding: 8px 14px;
+  margin-top: 14px;
+  line-height: 1.5;
+}
+
+.voucher {
+  width: 130px;
+  height: 150px;
+  border-radius: 16px;
+  padding: 8px;
+  margin-top: 14px;
+  border: 1.5px solid #ccd;
+  background: linear-gradient(135deg, #eaeaff, #dfe4ff);
+  animation: pop 0.7s;
+}
+
+.voucher.g {
+  background: linear-gradient(135deg, #e0ffe0, #e6f6ff);
+}
+
+.stamp {
+  height: 100%;
+  background: #fff1b8;
+  border: 3px dashed #222;
+  padding: 10px 8px;
+  font: 700 9px 'Poppins';
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.stamp big {
+  font: 700 17px 'Georgia', serif;
+  line-height: 1;
+}
+
+.stamp small {
+  font-size: 7px;
+  font-weight: 500;
+}
+
+.cupcake {
+  position: absolute;
+  right: 8px;
+  bottom: 12px;
+  font-size: 34px;
+}
+
+
+/* =====================================================
+   20. LAYAR 15 : BUNGA
+   ===================================================== */
+.awning {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  z-index: 2;
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.15));
+}
+
+.awning i {
+  flex: 1;
+  height: 78px;
+  background: #8ea4ff;
+  border-radius: 0 0 50% 50% / 0 0 22px 22px;
+}
+
+.awning i:nth-child(even) {
+  background: #cfd8ff;
+}
+
+.f-row {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 110px;
+}
+
+.f-card {
+  width: calc(min(270px, 38vh) * 0.69);
+  height: min(270px, 38vh);
+  min-width: 150px;
+  min-height: 218px;
+  border: 1.5px solid #222;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ffffbf, #fff5a1);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.f-card .slot {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.f-card.slide-l { animation: slideL 0.4s ease; }
+.f-card.slide-r { animation: slideR 0.4s ease; }
+
+@keyframes slideL { from { opacity: 0; transform: translateX(50px); } }
+@keyframes slideR { from { opacity: 0; transform: translateX(-50px); } }
+
+/* Panah kiri & kanan */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  color: #ff3fb0;
+  cursor: pointer;
+  z-index: 3;
+  padding: 8px;
+}
+
+.arrow.l { left: 8px;  animation: nudgeL 1.4s infinite; }
+.arrow.r { right: 8px; animation: nudgeR 1.4s infinite; }
+
+@keyframes nudgeL { 50% { transform: translate(-5px, -50%); } }
+@keyframes nudgeR { 50% { transform: translate(5px, -50%); } }
+
+/* Pop up bunga */
+.modal {
+  position: absolute;
+  inset: 0;
+  background: rgba(188, 217, 245, 0.7);
+  display: none;
+  place-items: center;
+  z-index: 30;
+}
+
+.modal.show {
+  display: grid;
+}
+
+.modal-in {
+  position: relative;
+  width: 310px;
+  max-width: 92%;
+  height: 440px;
+  max-height: 88%;
+  background: linear-gradient(180deg, #fffef6, #ffeee9);
+  border-radius: 22px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  padding: 56px 14px 18px;
+  animation: pop 0.5s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.modal-in .close {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #5a82d6;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.m-text {
+  width: 92px;
+  flex: none;
+  font: 700 13px/1.35 'Patrick Hand';
+  transform: rotate(-4deg);
+}
+
+.m-text::before {
+  content: '✦ ';
+  color: #e056c1;
+}
+
+.m-img {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+}
+
+
+/* =====================================================
+   21. MUSIK
+   ===================================================== */
+.music-btn {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid #222;
+  background: linear-gradient(180deg, #fffbb8, #ffe86a);
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 40;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.22);
+  display: grid;
+  place-items: center;
+  animation: musicPulse 1.8s infinite;
+}
+
+/* Saat musik diputar */
+.music-btn.playing {
+  animation: none;
+  background: linear-gradient(180deg, #d6ffc9, #a8ee93);
+}
+
+@keyframes musicPulse {
+  0%   { box-shadow: 0 6px 10px rgba(0, 0, 0, 0.22), 0 0 0 0 rgba(255, 214, 0, 0.7); }
+  70%  { box-shadow: 0 6px 10px rgba(0, 0, 0, 0.22), 0 0 0 14px rgba(255, 214, 0, 0); }
+  100% { box-shadow: 0 6px 10px rgba(0, 0, 0, 0.22), 0 0 0 0 rgba(255, 214, 0, 0); }
+}
+
+/* Tulisan "Ketuk untuk putar musik" (hanya di layar start) */
+.music-tip {
+  position: absolute;
+  right: 14px;
+  bottom: 64px;
+  background: #fff;
+  border: 1.5px solid #222;
+  border-radius: 10px;
+  padding: 5px 10px;
+  font: 500 10px 'Poppins';
+  z-index: 40;
+  max-width: 210px;
+  text-align: center;
+  display: none;
+}
+
+#app[data-screen="s-start"] .music-tip:not(.hidden) {
+  display: block;
+  animation: pulse 1.6s infinite;
+}
+
+/* Pesan error kalau file musik tidak ditemukan */
+.music-tip.err {
+  display: block !important;
+  background: #ffe3e3;
+  border-color: #c62828;
+  animation: none !important;
+}
