@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Wildan Birthday</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Titan+One&family=Lilita+One&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=4">
+</head>
+<body>
+<div id="app" data-screen="s-start">
+
+<!-- ============ 1. START ============ -->
+<section class="screen bg-blue-yellow active" id="s-start" style="padding:0">
+  <div class="hero">
+    <span class="spark" style="left:6px;top:20px">✦</span>
+    <span class="spark" style="right:0;top:80px;animation-delay:.7s">✦</span>
+    <div class="bubble l">EH...</div>
+    <div class="bubble r">ULTAH?</div>
+    <div class="slot ghost contain hero-img" data-label="img/hero.png"><img src="img/hero.png" alt=""></div>
+  </div>
+  <div class="card-start">
+    <div class="big-title" style="font-size:34px">IT'S<br>WILDAN<br>BIRTHDAY</div>
+    <button class="btn yellow" onclick="go('s-date')">START</button>
+  </div>
+</section>
+
+<!-- ============ 1b. KALENDER ============ -->
+<section class="screen bg-yellow" id="s-date">
+  <div class="date-title">Kapan Hari<br>Spesialnya?</div>
+  <p class="date-sub">Pilih tanggal yang benar ya!</p>
+  <div class="cal">
+    <div class="cal-head">Oktober 2026</div>
+    <div class="cal-week">
+      <span class="sun">Min</span><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+  <p class="cal-msg" id="calMsg"></p>
+</section>
+
+<!-- ============ 2. NOTIF ============ -->
+<section class="screen bg-blue-yellow" id="s-notif">
+  <div class="bell">🔔</div>
+  <div class="box">Halo, Wildan!<br>Ada Birthday Surprise<br>Untuk Kamu!</div>
+  <div class="box" style="margin-top:18px;padding:14px 20px;position:relative">
+    Apakah kamu ingin membukanya?
+    <span class="mini-arrow">↓</span>
+  </div>
+  <div class="bottom">
+    <button class="btn" onclick="this.classList.remove('shake');void this.offsetWidth;this.classList.add('shake')">No</button>
+    <button class="btn" onclick="go('s-pass')">Yes</button>
+  </div>
+</section>
+
+<!-- ============ 3. PASSWORD ============ -->
+<section class="screen bg-yellow" id="s-pass">
+  <svg class="star-bg" viewBox="0 0 100 100">
+    <polygon points="50,5 61,38 96,38 68,58 78,92 50,72 22,92 32,58 4,38 39,38" fill="#7b9ad8"/>
+  </svg>
+  <div class="lock">🔒</div>
+  <p class="pw-label">Enter the password</p>
+  <div class="pw-dots" id="pwDots"></div>
+  <div class="keypad" id="keypad"></div>
+</section>
+
+<!-- ============ 4. CHAT 1 ============ -->
+<!-- Next sekarang ke s-name (Wildan) -->
+<section class="screen" id="s-chat" style="background:#fff">
+  <div class="topbar"><div class="circle-btn">‹</div><span>Message</span><span style="font-size:20px">⋮</span></div>
+  <div class="date-pill">08 Januari 2026</div>
+  <div class="msg"><div class="avatar"></div><div class="bub">Happy birthday sayan</div></div>
+  <div class="chat-card">
+    <div class="slot" data-label="img/chat1.jpg"><img src="img/chat1.jpg" alt=""><div class="x">✕</div></div>
+    <div class="slot" data-label="img/chat2.jpg"><img src="img/chat2.jpg" alt=""><div class="x">✕</div></div>
+  </div>
+  <div class="input-bar"><span>⊕</span><span>😽</span><span>💗</span><div class="send">↑</div></div>
+  <div class="bottom"><button class="btn" onclick="go('s-name')">Next</button></div>
+</section>
+
+<!-- ============ 5. NAMA (sekarang lebih dulu) ============ -->
+<!-- Next sekarang ke s-chat2 -->
+<section class="screen" id="s-name" style="background:linear-gradient(180deg,#e8f2fb,#fff 40%,#cfe3f7)">
+  <div class="url">🔒 https://about.you.com</div>
+  <div class="name-title">INI NAMANYA<b>Wildan</b></div>
+  <div class="oval slot" data-label="img/main.jpg">
+    <img src="img/main.jpg" alt="">
+    <span class="tag" style="left:6px;top:100px">mau di Inggris</span>
+    <span class="tag" style="right:2px;top:150px">atau di Perancis</span>
+    <span class="tag big" style="left:12px;bottom:70px">WILDAN</span>
+  </div>
+  <div class="bottom"><button class="btn" onclick="go('s-chat2')">Next</button></div>
+</section>
+
+<!-- ============ 4b. CHAT 2 ("orangnya gimana sih") ============ -->
+<!-- Next sekarang ke s-about -->
+<section class="screen" id="s-chat2" style="background:linear-gradient(180deg,#fff 0%,#f4f9ff 100%)">
+  <div class="topbar"><div class="circle-btn">‹</div><span>Message</span><span style="font-size:20px">⋮</span></div>
+  <div class="typebox"><span id="typeTxt"></span><div class="send">↑</div></div>
+  <div class="bottom"><button class="btn" onclick="go('s-about')">Next</button></div>
+</section>
+
+<!-- ============ 6. ABOUT ============ -->
+<section class="screen" id="s-about" style="background:linear-gradient(180deg,#fff,#d9ffcf 40%,#b9f3a4)">
+  <div class="url">🔒 https://about.you.com</div>
+  <div class="icu-title">wildan<br>icu...</div>
+  <div class="facts">
+    <div class="fact"><div class="slot" data-label="img/f1.jpg"><img src="img/f1.jpg" alt=""></div><span>Ga Pernah Marah</span></div>
+    <div class="fact"><div class="slot" data-label="img/f2.jpg"><img src="img/f2.jpg" alt=""></div><span>Penyayang</span></div>
+    <div class="fact"><div class="slot" data-label="img/f3.jpg"><img src="img/f3.jpg" alt=""></div><span>Pekerja Keras</span></div>
+    <div class="fact"><div class="slot" data-label="img/f4.jpg"><img src="img/f4.jpg" alt=""></div><span>Alay :D</span></div>
+  </div>
+  <div class="another"><b>Another Fact About U</b><span id="factTxt"></span></div>
+  <div class="bottom"><button class="btn yellow" onclick="go('s-menu')">Next</button></div>
+</section>
+
+<!-- ============ 7. MENU ============ -->
+<section class="screen bg-yellow" id="s-menu">
+  <div class="menu-card" onclick="go('s-candle')">
+    <svg viewBox="0 0 90 80">
+      <ellipse cx="45" cy="65" rx="40" ry="10" fill="#fff" stroke="#222" stroke-width="2"/>
+      <rect x="10" y="35" width="70" height="30" fill="#fff" stroke="#222" stroke-width="2"/>
+      <rect x="10" y="35" width="70" height="8" fill="#ffd6d6" stroke="#222" stroke-width="2"/>
+      <g fill="#e33"><circle cx="20" cy="32" r="4"/><circle cx="45" cy="30" r="4"/><circle cx="70" cy="32" r="4"/></g>
+      <g stroke="#222" stroke-width="2"><line x1="38" y1="12" x2="38" y2="28"/><line x1="45" y1="10" x2="45" y2="28"/><line x1="52" y1="12" x2="52" y2="28"/></g>
+    </svg>
+    <div class="lbl">Blow the Candle</div>
+  </div>
+  <div class="menu-card" onclick="go('s-letter')">
+    <svg viewBox="0 0 90 70">
+      <rect x="5" y="12" width="80" height="50" rx="4" fill="#8f9cf2" transform="rotate(-8 45 37)"/>
+      <path d="M8 18 L45 42 L82 18" fill="none" stroke="#c8d0ff" stroke-width="2" transform="rotate(-8 45 37)"/>
+      <path d="M45 44c-6-6-10-1-5 3l5 4 5-4c5-4 1-9-5-3z" fill="#3a2a6a"/>
+    </svg>
+    <div class="lbl">Read a Letter</div>
+  </div>
+  <div class="menu-card" onclick="go('s-gallery')">
+    <svg viewBox="0 0 70 70">
+      <rect x="10" y="30" width="50" height="34" fill="#f7c64a" stroke="#d99a1c"/>
+      <rect x="6" y="22" width="58" height="12" fill="#ffd96a" stroke="#d99a1c"/>
+      <rect x="30" y="22" width="10" height="42" fill="#d32f2f"/>
+      <path d="M35 22c-14-14-20 2-2 2zM35 22c14-14 20 2 2 2z" fill="#d32f2f"/>
+    </svg>
+    <div class="lbl">Open the Gift</div>
+  </div>
+</section>
+
+<!-- ============ 8. LILIN ============ -->
+<section class="screen bg-yellow" id="s-candle">
+  <button class="btn top-back" onclick="go('s-menu')">Back</button>
+
+  <!-- TAHAP 1: tulis harapan -->
+  <div class="wish-stage" id="wishStage">
+    <div class="wish-title">Make a wish ✨</div>
+    <p class="wish-sub">Tulis harapanmu dulu ya, sebelum meniup lilin</p>
+    <textarea id="wishInput" maxlength="200" placeholder="Aku berharap..."></textarea>
+    <p class="wish-error" id="wishError"></p>
+    <button class="btn yellow" onclick="submitWish()">Aamiin, lanjut tiup lilin</button>
+  </div>
+
+  <!-- TAHAP 2: tiup lilin (muncul setelah harapan ditulis) -->
+  <div class="cake-stage" id="cakeStage">
+    <svg id="cake" viewBox="0 0 260 270" onclick="blowCandle()">
+      <ellipse cx="130" cy="238" rx="122" ry="18" fill="#fff" stroke="#222" stroke-width="3"/>
+      <path d="M30 140V214Q30 240 130 240Q230 240 230 214V140Z" fill="#fff" stroke="#222" stroke-width="3"/>
+      <ellipse cx="130" cy="140" rx="100" ry="22" fill="#fff" stroke="#222" stroke-width="3"/>
+      <path d="M30 142Q130 176 230 142V166Q212 184 194 166Q176 188 158 166Q140 190 122 166Q104 188 86 166Q68 184 50 166Q38 178 30 166Z" fill="#ffd0da" stroke="#222" stroke-width="3" stroke-linejoin="round"/>
+      <g fill="#e53935" stroke="#222" stroke-width="2.5"><circle cx="62" cy="140" r="10"/><circle cx="198" cy="140" r="10"/><circle cx="130" cy="154" r="10"/></g>
+
+      <!-- lilin 1 -->
+      <g transform="translate(96,0)">
+        <rect x="-5" y="76" width="10" height="52" fill="#9dbcff" stroke="#222" stroke-width="2.5"/>
+        <g class="flame"><circle cx="0" cy="54" r="20" fill="#ffe27a" opacity=".35"/><path d="M0 72C-9 62-7 48 0 36C7 48 9 62 0 72Z" fill="#ffb300" stroke="#222" stroke-width="2"/><path d="M0 70C-4 64-3 56 0 50C3 56 4 64 0 70Z" fill="#fff3a0"/></g>
+        <circle class="smoke" cx="0" cy="62" r="6"/>
+      </g>
+      <!-- lilin 2 -->
+      <g transform="translate(130,0)">
+        <rect x="-5" y="76" width="10" height="52" fill="#ffffff" stroke="#222" stroke-width="2.5"/>
+        <g class="flame" style="animation-delay:.15s"><circle cx="0" cy="54" r="20" fill="#ffe27a" opacity=".35"/><path d="M0 72C-9 62-7 48 0 36C7 48 9 62 0 72Z" fill="#ffb300" stroke="#222" stroke-width="2"/><path d="M0 70C-4 64-3 56 0 50C3 56 4 64 0 70Z" fill="#fff3a0"/></g>
+        <circle class="smoke" cx="0" cy="62" r="6" style="animation-delay:.15s"/>
+      </g>
+      <!-- lilin 3 -->
+      <g transform="translate(164,0)">
+        <rect x="-5" y="76" width="10" height="52" fill="#ffb3c7" stroke="#222" stroke-width="2.5"/>
+        <g class="flame" style="animation-delay:.3s"><circle cx="0" cy="54" r="20" fill="#ffe27a" opacity=".35"/><path d="M0 72C-9 62-7 48 0 36C7 48 9 62 0 72Z" fill="#ffb300" stroke="#222" stroke-width="2"/><path d="M0 70C-4 64-3 56 0 50C3 56 4 64 0 70Z" fill="#fff3a0"/></g>
+        <circle class="smoke" cx="0" cy="62" r="6" style="animation-delay:.3s"/>
+      </g>
+    </svg>
+    <p class="hint-blow">Ketuk kuenya untuk meniup lilin 🎂</p>
+  </div>
+
+  <!-- POP UP setelah lilin padam + konfeti -->
+  <div class="wish-popup" id="wishPopup">
+    <div class="wish-popup-box">
+      <div class="wish-popup-emoji">🎉</div>
+      <div class="wish-popup-text">Yeyy... semoga harapan dan doa-doanya kamu dikabulkan ya sayang 💖</div>
+      <button class="btn yellow" onclick="go('s-menu')">Kembali ke menu</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. SURAT ============ -->
+<section class="screen bg-green" id="s-letter">
+  <div class="env-wrap" id="envWrap" onclick="openLetter()">
+    <div class="env-hint">Ketuk amplopnya untuk membuka 💌</div>
+    <div class="paper" id="paper">
+      <div class="heart">♥</div>
+      <div class="paper-inner">
+        Happy Birthday sayang &lt;3<br>Today is all about you, and I hope today will be a special as you are.<br><br>
+        Terima kasih kamu sudah menjadi laki-laki yang baik, tulus, pemberani, dan sabar. I'm so grateful to have you in my live.<br><br>
+        Semoga kamu panjang umur, banyak sehatnya daripada sakit, dilindungi dimanapun kamu berada, dan semoga semua hal baik selalu mengiringi kamu. Aamiin.<br><br>
+        And the last, I hope you stay here with me for a looooooooong time, because I think... I want you in my life foreverrhh. Love yeahhhh!!!
+      </div>
+    </div>
+    <div class="env">
+      <div class="env-back"></div>
+      <div class="env-front"></div>
+      <div class="env-flap"></div>
+      <div class="seal">♥</div>
+    </div>
+  </div>
+  <div class="bottom"><button class="btn blue" onclick="go('s-menu')">Back</button></div>
+</section>
+
+<!-- ============ 10. GALLERY ============ -->
+<section class="screen bg-pink" id="s-gallery">
+  <div class="hint">👁 (klik icon untuk lihat)</div>
+  <div class="g-card" style="background:linear-gradient(180deg,#e0f1ff,#a9d4ff)" onclick="go('s-folder')">
+    <svg viewBox="0 0 40 50"><path d="M4 2h32v46l-16-10-16 10z" fill="#1e7bff"/></svg>Momments
+  </div>
+  <div class="g-card" style="background:linear-gradient(180deg,#fff7a8,#ffe14d)" onclick="go('s-claw')">
+    <svg viewBox="0 0 50 50"><polygon points="25,3 31,19 48,19 34,30 40,46 25,36 10,46 16,30 2,19 19,19" fill="#ffa21a" stroke="#d17a00"/></svg>Mystery Gift
+  </div>
+  <div class="g-card" style="background:linear-gradient(180deg,#ffd7f4,#ff9be0)" onclick="go('s-flower')">
+    <svg viewBox="0 0 50 50" fill="#d6126b"><circle cx="25" cy="12" r="10"/><circle cx="38" cy="22" r="10"/><circle cx="33" cy="38" r="10"/><circle cx="17" cy="38" r="10"/><circle cx="12" cy="22" r="10"/></svg>Flower
+  </div>
+  <div class="bottom"><button class="btn" onclick="go('s-menu')">Back</button></div>
+</section>
+
+<!-- ============ 11. FOLDER ============ -->
+<section class="screen bg-sky" id="s-folder">
+  <div class="window">
+    <div class="win-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div style="display:flex;flex-direction:column;align-items:center">
+      <div class="folder" onclick="openGrid('yours')">
+        <svg viewBox="0 0 80 60"><path d="M2 8h28l6 6h42v44H2z" fill="#5f9cf0"/><rect x="2" y="16" width="76" height="42" rx="3" fill="#8ec1ff"/></svg>yours
+      </div>
+      <div class="folder" onclick="openGrid('us')">
+        <svg viewBox="0 0 80 60"><path d="M2 8h28l6 6h42v44H2z" fill="#5f9cf0"/><rect x="2" y="16" width="76" height="42" rx="3" fill="#8ec1ff"/></svg>us
+      </div>
+    </div>
+    <div class="win-foot">👁 (klik folder untuk lihat)</div>
+  </div>
+  <div class="bottom"><button class="btn blue" onclick="go('s-gallery')">Back</button></div>
+</section>
+
+<!-- ============ 12. GRID FOTO ============ -->
+<section class="screen bg-sky" id="s-grid">
+  <div class="search">🔍 <span id="searchTxt"></span></div>
+  <div class="grid" id="gridBox"></div>
+  <div class="bottom"><button class="btn" onclick="go('s-folder')">Back</button></div>
+</section>
+
+<!-- ============ 13. MESIN CAPIT ============ -->
+<section class="screen bg-blue-yellow" id="s-claw">
+  <svg id="clawSvg" class="claw-svg" viewBox="0 0 280 400" xmlns="http://www.w3.org/2000/svg">
+    <defs id="clawDefs">
+      <linearGradient id="cab" x1="0" x2="1"><stop offset="0" stop-color="#ff5a45"/><stop offset=".5" stop-color="#e02a1d"/><stop offset="1" stop-color="#b8160e"/></linearGradient>
+      <linearGradient id="glassBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6faff"/><stop offset="1" stop-color="#d6e7fa"/></linearGradient>
+      <clipPath id="glassClip"><rect x="34" y="70" width="212" height="196" rx="4"/></clipPath>
+    </defs>
+
+    <rect x="10" y="30" width="260" height="360" rx="16" fill="url(#cab)" stroke="#161616" stroke-width="4"/>
+    <rect x="10" y="6" width="260" height="52" rx="14" fill="url(#cab)" stroke="#161616" stroke-width="4"/>
+    <text x="140" y="44" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="25" fill="#fff" stroke="#161616" stroke-width="1.2" paint-order="stroke">Mystery Gift</text>
+    <g id="bulbs"></g>
+
+    <rect x="30" y="66" width="220" height="204" rx="6" fill="#161616"/>
+    <rect x="34" y="70" width="212" height="196" rx="4" fill="url(#glassBg)"/>
+    <g clip-path="url(#glassClip)">
+      <rect x="34" y="258" width="212" height="8" fill="#c3cfdc"/>
+      <rect x="40" y="256" width="62" height="10" fill="#1d1d1d"/>
+      <g id="balls"></g>
+
+      <g id="carriage">
+        <rect x="-18" y="70" width="36" height="16" rx="3" fill="#8a96a6" stroke="#161616" stroke-width="2"/>
+        <g id="hoist">
+          <rect x="-2" y="-200" width="4" height="200" fill="#6d7886"/>
+          <g id="carried" opacity="0">
+            <circle cy="38" r="19" fill="url(#rg-y)" stroke="rgba(0,0,0,.35)" stroke-width="1.5"/>
+            <ellipse cx="-7" cy="30" rx="6" ry="3.5" fill="#fff" opacity=".6"/>
+          </g>
+          <circle r="10" fill="#9aa6b5" stroke="#161616" stroke-width="2"/>
+          <g id="armL"><path d="M0 4Q-24 6-22 32Q-21 38-13 35" fill="none" stroke="#7f8b9b" stroke-width="5" stroke-linecap="round"/></g>
+          <g id="armR"><path d="M0 4Q24 6 22 32Q21 38 13 35" fill="none" stroke="#7f8b9b" stroke-width="5" stroke-linecap="round"/></g>
+        </g>
+      </g>
+
+      <g id="dropBall" opacity="0">
+        <circle r="18" fill="url(#rg-y)" stroke="rgba(0,0,0,.35)" stroke-width="1.5"/>
+        <ellipse cx="-6" cy="-7" rx="5.5" ry="3" fill="#fff" opacity=".6"/>
+      </g>
+    </g>
+    <path d="M34 70H124L34 196Z" fill="#fff" opacity=".28"/>
+    <path d="M150 70H172L72 266H50Z" fill="#fff" opacity=".12"/>
+
+    <rect x="24" y="278" width="232" height="86" rx="12" fill="#9e1710" stroke="#161616" stroke-width="3"/>
+    <rect x="36" y="288" width="86" height="68" rx="10" fill="#240c0a" stroke="#161616" stroke-width="3"/>
+    <text x="79" y="304" text-anchor="middle" font-size="8" font-family="Poppins,sans-serif" font-weight="600" fill="#ffe45c">AMBIL HADIAH</text>
+    <g id="doorBall" opacity="0" style="transform:translate(79px,334px)">
+      <circle r="16" fill="url(#rg-y)" stroke="rgba(0,0,0,.4)" stroke-width="1.5"/>
+      <ellipse cx="-5" cy="-6" rx="5" ry="3" fill="#fff" opacity=".6"/>
+    </g>
+    <circle cx="170" cy="326" r="17" fill="#2a2a2a" stroke="#161616" stroke-width="2"/>
+    <line x1="170" y1="326" x2="170" y2="300" stroke="#d6d6d6" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="170" cy="298" r="10" fill="#ffd23f" stroke="#161616" stroke-width="2"/>
+    <circle cx="222" cy="304" r="10" fill="#ffe45c" stroke="#161616" stroke-width="2"/>
+    <circle cx="222" cy="334" r="10" fill="#4aa3ff" stroke="#161616" stroke-width="2"/>
+    <text x="140" y="382" text-anchor="middle" font-size="14" fill="#ffe45c" letter-spacing="8">★ ★ ★</text>
+  </svg>
+  <button class="btn yellow claw-btn" id="btnClaw" onclick="doClaw()">Ambil Hadiah</button>
+</section>
+
+<!-- ============ 14. VOUCHER ============ -->
+<section class="screen bg-pink" id="s-voucher">
+  <div class="v-note">Yeay! Kamu mendapatkan B'day voucher<br>yang bisa digunakan sesuai keinginan!</div>
+  <div class="voucher">
+    <div class="stamp"><span style="color:#d11">♥ B'DAY VOUCHER</span><big>romantic<br><i>Dinner</i></big><small>Limited Voucher!</small><span class="cupcake">🧁</span></div>
+  </div>
+  <div class="voucher g">
+    <div class="stamp"><span style="color:#d11">♥ B'DAY VOUCHER</span><big>Your<br><i>Choice</i></big><small>Limited Voucher!</small><span class="cupcake">🧁</span></div>
+  </div>
+  <div class="bottom"><button class="btn" onclick="go('s-gallery')">Back</button></div>
+</section>
+
+<!-- ============ 15. BUNGA ============ -->
+<section class="screen bg-sky" id="s-flower">
+  <div class="awning"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="f-row">
+    <span class="arrow l" onclick="flip(-1)">◀</span>
+    <div class="f-card" id="fCard" onclick="pickFlower()"></div>
+    <span class="arrow r" onclick="flip(1)">▶</span>
+  </div>
+  <div class="bottom col">
+    <button class="btn" onclick="pickFlower()">Pilih Bunga Favoritmu!</button>
+    <button class="btn blue" onclick="go('s-gallery')">Back</button>
+  </div>
+</section>
+
+<!-- Konfeti (dipakai di layar lilin) -->
+<canvas id="confetti"></canvas>
+
+<!-- Pop up bunga -->
+<div class="modal" id="modal">
+  <div class="modal-in">
+    <div class="close" onclick="closeModal()">✕</div>
+    <div class="m-text">Yeay! kamu mendapatkan bunga paling cantik di dunia :D</div>
+    <div class="slot contain m-img" id="mImg"></div>
+  </div>
+</div>
+
+<!-- MUSIK: taruh file lagumu di folder "audio" dengan nama musik.mp3 -->
+<audio id="bgm" src="audio/musik.mp3" loop preload="auto"></audio>
+<span class="music-tip" id="musicTip">Ketuk untuk putar musik</span>
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()" aria-label="Putar / jeda musik">🎵</button>
+
+</div>
+<script src="script.js?v=4"></script>
+</body>
+</html>
